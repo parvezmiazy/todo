@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { useTodosDispatch } from "../contexts/TodosContext";
 
-export default function Todo({ todo, onChangeTodo, onDeleteTodo }) {
+export default function Todo({ todo }) {
   const [edit, setEdit] = useState(false);
-
+  const dispatch = useTodosDispatch();
   let todoContent;
 
   if (edit) {
@@ -11,9 +12,12 @@ export default function Todo({ todo, onChangeTodo, onDeleteTodo }) {
         <input
           value={todo.text}
           onChange={(e) => {
-            onChangeTodo({
-              ...todo,
-              text: e.target.value,
+            dispatch({
+              type: "changed",
+              todo: {
+                ...todo,
+                text: e.target.value,
+              },
             });
           }}
         />
@@ -36,14 +40,26 @@ export default function Todo({ todo, onChangeTodo, onDeleteTodo }) {
             type="checkbox"
             checked={todo.done}
             onChange={(e) => {
-              onChangeTodo({
-                ...todo,
-                done: e.target.checked,
+              dispatch({
+                type: "changed",
+                todo: {
+                  ...todo,
+                  done: e.target.checked,
+                },
               });
             }}
           />
           {todoContent}
-          <button onClick={() => onDeleteTodo(todo.id)}>Delete</button>
+          <button
+            onClick={() => {
+              dispatch({
+                type: "deleted",
+                id: todo.id,
+              });
+            }}
+          >
+            Delete
+          </button>
         </label>
       </li>
     </>
