@@ -1,10 +1,12 @@
-import { useReducer } from "react";
+//import { useReducer } from "react";
+import { useImmerReducer } from "use-immer";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 import { initialTodos } from "./data/todo";
 import todoReducer from "./todoReducer";
 export default function App() {
-  const [todos, dispatch] = useReducer(todoReducer, initialTodos);
+  //const [todos, dispatch] = useReducer(todoReducer, initialTodos);
+  const [todos, dispatch] = useImmerReducer(todoReducer, initialTodos);
 
   const getNextId = (data) => {
     const maxId = data.reduce((prev, current) =>
