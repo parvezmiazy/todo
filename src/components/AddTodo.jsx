@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useTodos, useTodosDispatch } from "../contexts/TodosContext";
+import { getNextId } from "../utils/getNextId";
 
 export default function AddTodo({ onAdd }) {
   const [text, setText] = useState("");
-
+  const todos = useTodos();
+  const dispatch = useTodosDispatch();
   const handleChangeText = (e) => {
     setText(e.target.value);
   };
@@ -12,7 +15,11 @@ export default function AddTodo({ onAdd }) {
       <button
         onClick={() => {
           setText("");
-          onAdd(text);
+          dispatch({
+            type: "added",
+            text: text, // we can also write this way text only if property and value is same
+            id: getNextId(todos),
+          });
         }}
       >
         Add
