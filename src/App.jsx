@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 import { initialTodos } from "./data/todo";
+import todoReducer from "./todoReducer";
 export default function App() {
-  const [todos, setTodos] = useState(initialTodos);
+  const [todos, dispatch] = useReducer(todoReducer, initialTodos);
 
   const getNextId = (data) => {
     const maxId = data.reduce((prev, current) =>
@@ -13,22 +14,25 @@ export default function App() {
   };
 
   const handleAddTodo = (text) => {
-    setTodos([...todos, { id: getNextId(todos), text: text, done: false }]);
+    dispatch({
+      type: "added",
+      text: text, // we can also write this way text only if property and value is same
+      id: getNextId(todos),
+    });
   };
 
   const handleChangeTodo = (todo) => {
-    const nextTodo = todos.map((t) => {
-      if (t.id === todo.id) {
-        return todo;
-      } else {
-        return t;
-      }
+    dispatch({
+      type: "changed",
+      todo: todo,
     });
-    setTodos(nextTodo);
   };
 
   const handleDeleteTodo = (todoId) => {
-    setTodos(todos.filter((t) => t.id !== todoId));
+    dispatch({
+      type: "deleted",
+      id: todoId,
+    });
   };
   return (
     <>
