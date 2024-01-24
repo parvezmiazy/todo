@@ -3,7 +3,7 @@ import { useImmerReducer } from "use-immer";
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 import { initialTodos } from "./data/todo";
-import todoReducer from "./todoReducer";
+import todoReducer from "./reducers/todoReducer";
 export default function App() {
   //const [todos, dispatch] = useReducer(todoReducer, initialTodos);
   const [todos, dispatch] = useImmerReducer(todoReducer, initialTodos);
